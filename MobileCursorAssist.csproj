@@ -6,10 +6,10 @@
     <AssemblyName>MobileCursorAssist</AssemblyName>
     <RootNamespace>MobileCursorAssist</RootNamespace>
     <Nullable>enable</Nullable>
+    <GameDlls Condition="'$(GameDlls)' == ''">$(MSBuildProjectDirectory)/gamedlls</GameDlls>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
