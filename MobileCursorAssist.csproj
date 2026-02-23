@@ -1,24 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- Kütüphane olarak derliyoruz, .exe değil -->
     <OutputType>Library</OutputType>
-    <!-- Stardew Valley SMAPI net6.0 kullanır -->
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>MobileCursorAssist</AssemblyName>
     <RootNamespace>MobileCursorAssist</RootNamespace>
-    <!-- Null güvenliği açık -->
     <Nullable>enable</Nullable>
-    <!-- Uyarıları hata say (temiz kod için) -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <!-- src/ klasöründeki .cs dosyalarını dahil et -->
-  <ItemGroup>
-    <Compile Include="src\**\*.cs" />
-  </ItemGroup>
-
-  <!-- SMAPI build paketi: referansları otomatik çözer -->
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.*" />
   </ItemGroup>
