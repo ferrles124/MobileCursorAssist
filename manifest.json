@@ -1,0 +1,9 @@
+{
+  "Name": "Mobile Cursor Assist",
+  "Author": "MeD",
+  "Version": "1.0.0",
+  "Description": "Adds a touch-friendly cursor circle overlay for mobile/touch players.",
+  "UniqueID": "MeD.MobileCursorAssist",
+  "EntryPoint": "MobileCursorAssist.ModEntry",
+  "MinimumApiVersion": "3.18.0"
+}
