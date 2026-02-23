@@ -1,5 +1,3 @@
-name: Build Mod
-
 on:
   push:
     branches: [ main ]
@@ -20,17 +18,23 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      # Stardew Valley dll'lerini NuGet'ten indir (oyun gerekmez)
-      - name: Install game references via NuGet
+      # SMAPI dll'lerini GitHub Releases'tan indir
+      - name: Download SMAPI
         run: |
-          dotnet add package Pathoschild.Stardew.ModBuildConfig --version 4.4.0
-          dotnet add package StardewValley.GameFramework --version 1.6.0 || true
+          mkdir -p lib
+          wget -q https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip -O smapi.zip
+          unzip -q smapi.zip -d smapi_extracted
+          # Linux klasöründen dll'leri al
+          find smapi_extracted -name "StardewModdingAPI.dll" | head -1 | xargs -I{} cp {} lib/
+          find smapi_extracted -name "StardewValley.dll" | head -1 | xargs -I{} cp {} lib/
+          find smapi_extracted -name "xTile.dll" | head -1 | xargs -I{} cp {} lib/
+          ls lib/
 
       - name: Restore
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore /p:GamePath="" /p:IgnoreModFilePatterns=""
+        run: dotnet build --configuration Release --no-restore
 
       - name: Collect mod files
         run: |
