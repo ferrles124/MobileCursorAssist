@@ -6,11 +6,28 @@
     <AssemblyName>MobileCursorAssist</AssemblyName>
     <RootNamespace>MobileCursorAssist</RootNamespace>
     <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.*" />
+    <!-- Pathoschild yerine direkt NuGet paketlerini kullanıyoruz -->
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <!-- SMAPI ve Stardew dll'lerini GitHub'dan indireceğiz -->
+  <ItemGroup>
+    <Reference Include="StardewValley">
+      <HintPath>lib/StardewValley.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SMAPI">
+      <HintPath>lib/StardewModdingAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="xTile">
+      <HintPath>lib/xTile.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
