@@ -11,9 +11,8 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.4.0">
-      <SkipValidation>true</SkipValidation>
-    </PackageReference>
+    <PackageReference Include="Platonymous.StardewValley.Ref" Version="1.6.8" />
+    <PackageReference Include="Platonymous.SMAPI.Ref" Version="4.0.0" />
   </ItemGroup>
 
 </Project>
