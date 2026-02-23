@@ -1,7 +1,7 @@
+name: Build Mod
+
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
   workflow_dispatch:
 
@@ -18,28 +18,25 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      # SMAPI dll'lerini GitHub Releases'tan indir
-      - name: Download SMAPI
+      - name: Download SMAPI unpacked
         run: |
-          mkdir -p lib
-          wget -q https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip -O smapi.zip
-          unzip -q smapi.zip -d smapi_extracted
-          # Linux klasöründen dll'leri al
-          find smapi_extracted -name "StardewModdingAPI.dll" | head -1 | xargs -I{} cp {} lib/
-          find smapi_extracted -name "StardewValley.dll" | head -1 | xargs -I{} cp {} lib/
-          find smapi_extracted -name "xTile.dll" | head -1 | xargs -I{} cp {} lib/
-          ls lib/
+          mkdir -p "$HOME/stardew/smapi"
+          wget -q "https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip" -O smapi.zip
+          unzip -q smapi.zip -d smapi_raw
+          cp smapi_raw/internal/linux/install/game/StardewModdingAPI.dll "$HOME/stardew/smapi/" || true
+          cp smapi_raw/internal/linux/install/game/*.dll "$HOME/stardew/" || true
+          ls "$HOME/stardew/"
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore /p:GamePath="$HOME/stardew"
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore /p:GamePath="$HOME/stardew" /p:DeployModFolderName=""
 
       - name: Collect mod files
         run: |
           mkdir -p artifact/MobileCursorAssist
-          cp bin/Release/net6.0/MobileCursorAssist.dll artifact/MobileCursorAssist/
+          find . -name "MobileCursorAssist.dll" | grep -v obj | head -1 | xargs -I{} cp {} artifact/MobileCursorAssist/
           cp manifest.json artifact/MobileCursorAssist/
           cp config.json artifact/MobileCursorAssist/
 
