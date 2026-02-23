@@ -1,0 +1,12 @@
+# Build çıktıları - bunları repoya atmıyoruz
+bin/
+obj/
+
+# Visual Studio / Rider geçici dosyaları
+*.user
+.vs/
+.idea/
+
+# OS dosyaları
+.DS_Store
+Thumbs.db
