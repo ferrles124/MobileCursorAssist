@@ -1,0 +1,47 @@
+name: Build Mod
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  # Elle de tetikleyebilmek için
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Repoyu indir
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # .NET 6 kur
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      # Bağımlılıkları indir
+      - name: Restore
+        run: dotnet restore
+
+      # Release olarak derle
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # .dll ve manifest ve config'i bir araya topla
+      - name: Collect mod files
+        run: |
+          mkdir -p artifact/MobileCursorAssist
+          cp bin/Release/net6.0/MobileCursorAssist.dll artifact/MobileCursorAssist/
+          cp manifest.json artifact/MobileCursorAssist/
+          cp config.json artifact/MobileCursorAssist/
+
+      # İndirebileceğin zip olarak yükle
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MobileCursorAssist
+          path: artifact/MobileCursorAssist/
