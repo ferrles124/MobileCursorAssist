@@ -18,20 +18,11 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Download SMAPI unpacked
-        run: |
-          mkdir -p "$HOME/stardew/smapi"
-          wget -q "https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip" -O smapi.zip
-          unzip -q smapi.zip -d smapi_raw
-          cp smapi_raw/internal/linux/install/game/StardewModdingAPI.dll "$HOME/stardew/smapi/" || true
-          cp smapi_raw/internal/linux/install/game/*.dll "$HOME/stardew/" || true
-          ls "$HOME/stardew/"
-
       - name: Restore
-        run: dotnet restore /p:GamePath="$HOME/stardew"
+        run: dotnet restore
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore /p:GamePath="$HOME/stardew" /p:DeployModFolderName=""
+        run: dotnet build --configuration Release --no-restore
 
       - name: Collect mod files
         run: |
