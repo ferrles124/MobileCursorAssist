@@ -1,0 +1,12 @@
+{
+  "SingleTapAction": "MouseLeft",
+  "DoubleTapAction": "MouseLeft",
+  "LongPressAction": "MouseRight",
+  "DoubleTapMaxMs": 300,
+  "LongPressMinMs": 600,
+  "CircleRadius": 40,
+  "CircleColorR": 255,
+  "CircleColorG": 255,
+  "CircleColorB": 255,
+  "CircleColorA": 180
+}
