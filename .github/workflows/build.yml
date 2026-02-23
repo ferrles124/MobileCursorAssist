@@ -21,26 +21,27 @@ jobs:
       - name: Get SMAPI dlls
         run: |
           wget -q https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip -O smapi.zip
-          unzip -q smapi.zip -d smapi
+          unzip -q smapi.zip -d smapi_temp
           mkdir -p gamedlls
-          find smapi -name "StardewModdingAPI.dll" | head -1 | xargs -I{} cp {} gamedlls/
-          find smapi -name "StardewValley.dll" | head -1 | xargs -I{} cp {} gamedlls/
-          find smapi -name "xTile.dll" | head -1 | xargs -I{} cp {} gamedlls/
-          echo "Bulunan dll'ler:"
+          # Sadece gerekli DLL'leri bul ve gamedlls klasörüne kopyala
+          find smapi_temp -name "StardewModdingAPI.dll" -exec cp {} gamedlls/ \;
+          find smapi_temp -name "StardewValley.dll" -exec cp {} gamedlls/ \;
+          find smapi_temp -name "xTile.dll" -exec cp {} gamedlls/ \;
+          echo "Kopyalanan DLL'ler:"
           ls gamedlls/
 
       - name: Restore
-        run: dotnet restore /p:GameDlls="${GITHUB_WORKSPACE}/gamedlls"
+        run: dotnet restore -p:GameDlls="${{ github.workspace }}/gamedlls"
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore /p:GameDlls="${GITHUB_WORKSPACE}/gamedlls"
+        run: dotnet build --configuration Release --no-restore -p:GameDlls="${{ github.workspace }}/gamedlls"
 
       - name: Collect mod files
         run: |
           mkdir -p artifact/MobileCursorAssist
-          find . -name "MobileCursorAssist.dll" | grep -v obj | head -1 | xargs -I{} cp {} artifact/MobileCursorAssist/
-          cp manifest.json artifact/MobileCursorAssist/
-          cp config.json artifact/MobileCursorAssist/
+          find bin/Release/net6.0/ -name "MobileCursorAssist.dll" -exec cp {} artifact/MobileCursorAssist/ \;
+          [ -f manifest.json ] && cp manifest.json artifact/MobileCursorAssist/
+          [ -f config.json ] && cp config.json artifact/MobileCursorAssist/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
